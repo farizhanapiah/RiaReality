@@ -1,0 +1,17 @@
+# Large files / internal docs
+Slides/
+
+# macOS
+.DS_Store
+
+# AI / project internals
+.claude/
+CLAUDE.md
+RiaReality.md
+landingpage.md
+brand_assets/brandguide.md
+
+# Temporary / source files
+**/*.ai
+**/*.tmp
+brand_assets/~*
