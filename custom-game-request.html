@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Game Request — RiaReality</title>
+  <meta name="description" content="Request a custom Mixed Reality game for your event. Tell us your space, dates, and goals — we'll scope a build for you.">
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" href="brand_assets/favicon/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="brand_assets/favicon/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="brand_assets/favicon/favicon-96x96.png">
+  <link rel="apple-touch-icon" href="brand_assets/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="brand_assets/favicon/site.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --rr-blue:    #0373fc;
+      --rr-yellow:  #ffdf01;
+      --rr-green:   #00ff48;
+      --rr-pink:    #fe0166;
+      --navy:       #001a6e;
+      --white:      #ffffff;
+
+      --font-display: 'Fredoka', sans-serif;
+      --font-body:    'Space Grotesk', sans-serif;
+
+      --gutter: clamp(24px, 5vw, 64px);
+      --max-w:  720px;
+
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a   { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .bg-dark-dot {
+      background-color: var(--navy);
+      background-image:
+        radial-gradient(rgba(255,255,255,.042) 1px, transparent 1px),
+        radial-gradient(ellipse 60% 50% at 80% 50%, rgba(3,115,252,.12) 0%, transparent 60%);
+      background-size: 30px 30px, 100% 100%;
+    }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      width: 100%;
+    }
+
+    /* HEADER */
+    .page-header {
+      padding: 24px var(--gutter);
+    }
+    .page-header img {
+      height: 32px;
+      width: auto;
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      padding: 24px 0 80px;
+    }
+    .page-intro {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .page-eyebrow {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--rr-yellow);
+      margin-bottom: 14px;
+    }
+    .page-hl {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(36px, 6vw, 52px);
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .page-lede {
+      font-size: 17px;
+      line-height: 1.55;
+      color: rgba(255,255,255,.65);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* FORM */
+    .form-wrap {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: clamp(24px, 4vw, 40px);
+    }
+
+    .form-field { margin-bottom: 22px; }
+    .form-field.hidden { display: none; }
+    .form-label {
+      display: block;
+      font-weight: 600;
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .form-helper {
+      font-size: 13px;
+      color: rgba(255,255,255,.4);
+      margin-top: 6px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.2);
+      border-radius: 12px;
+      color: white;
+      font-family: var(--font-body);
+      font-size: 16px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 110px;
+      line-height: 1.5;
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: rgba(255,255,255,.35); }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--rr-yellow);
+      box-shadow: 0 0 0 3px rgba(255,223,1,.2);
+    }
+    .form-input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      opacity: .7;
+      cursor: pointer;
+    }
+
+    /* PILL GROUPS */
+    .pill-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill {
+      padding: 10px 20px;
+      border-radius: 100px;
+      border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.08);
+      color: white;
+      font-family: var(--font-body);
+      font-size: 14px;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .pill.selected {
+      background: var(--rr-yellow);
+      border-color: var(--rr-yellow);
+      color: var(--navy);
+      font-weight: 600;
+    }
+    .pill:hover:not(.selected) { background: rgba(255,255,255,.15); }
+
+    /* Q14 — pill row + units inline */
+    .quest-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .quest-units-wrap .form-label-sm {
+      font-size: 11px;
+      color: rgba(255,255,255,.5);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    /* SUBMIT */
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--rr-yellow);
+      color: var(--navy);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background .2s ease, color .2s ease, transform .2s var(--spring), box-shadow .2s;
+    }
+    .btn-submit:hover {
+      background: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(255,223,1,.3);
+    }
+    .btn-submit:active { transform: translateY(0) scale(.99); }
+    .btn-submit:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+
+    /* SUCCESS / ERROR */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .form-success.visible { display: block; }
+    .success-icon { font-size: 48px; color: var(--rr-green); margin-bottom: 16px; display: block; }
+    .success-hl { font-family: var(--font-display); font-size: 32px; color: white; margin-bottom: 12px; }
+    .success-body { font-size: 17px; color: rgba(255,255,255,.65); line-height: 1.6; margin-bottom: 8px; }
+    .success-sub  { font-size: 14px; color: rgba(255,255,255,.4); }
+
+    .form-error {
+      display: none;
+      background: rgba(254,1,102,.15);
+      border-left: 3px solid var(--rr-pink);
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: white;
+      line-height: 1.5;
+    }
+    .form-error.visible { display: block; }
+
+    /* FOOTER */
+    .page-footer {
+      padding: 24px var(--gutter);
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,.4);
+    }
+    .page-footer a { color: rgba(255,255,255,.6); }
+    .page-footer a:hover { color: var(--rr-yellow); }
+
+    @media (max-width: 600px) {
+      .pill-group { flex-direction: column; }
+      .pill { text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="bg-dark-dot">
+
+  <header class="page-header">
+    <a href="/" aria-label="RiaReality home">
+      <img src="brand_assets/Riareality_logo_w.png" alt="RiaReality">
+    </a>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-intro">
+        <p class="page-eyebrow">Custom Build</p>
+        <h1 class="page-hl">Custom Game Request</h1>
+        <p class="page-lede">Tell us about your event — we'll scope a custom Mixed Reality experience for you.</p>
+      </div>
+
+      <div class="form-wrap">
+        <div class="form-error" id="form-error">
+          Something went wrong. Please try again or email us directly at
+          <a href="mailto:fariz@weareedt.com" style="color:var(--rr-yellow)">fariz@weareedt.com</a>
+        </div>
+
+        <form id="custom-game-form" action="https://formspree.io/f/mjglvdnk" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="New RiaReality Custom Game Request">
+
+          <!-- Q1 Company -->
+          <div class="form-field">
+            <label class="form-label" for="f-company">1. Company Name</label>
+            <input class="form-input" type="text" id="f-company" name="company" placeholder="e.g. Acme Sdn Bhd" required>
+          </div>
+
+          <!-- Q2 Email -->
+          <div class="form-field">
+            <label class="form-label" for="f-email">2. Email</label>
+            <input class="form-input" type="email" id="f-email" name="email" placeholder="e.g. hello@yourcompany.com" required>
+          </div>
+
+          <!-- Q3 Event Date -->
+          <div class="form-field">
+            <label class="form-label" for="f-event-date">3. Event Date</label>
+            <input class="form-input" type="date" id="f-event-date" name="event_date" required>
+          </div>
+
+          <!-- Q4 Event Duration -->
+          <div class="form-field">
+            <label class="form-label" for="f-duration">4. Event Duration</label>
+            <input class="form-input" type="text" id="f-duration" name="event_duration" placeholder="e.g. 3 days" required>
+          </div>
+
+          <!-- Q5 Hours per day -->
+          <div class="form-field">
+            <label class="form-label" for="f-hours">5. How Many Hours / Day?</label>
+            <input class="form-input" type="number" id="f-hours" name="hours_per_day" min="1" max="24" placeholder="e.g. 8" required>
+          </div>
+
+          <!-- Q6 5x5m space -->
+          <div class="form-field">
+            <label class="form-label">6. Do You Have a 5×5m Space?</label>
+            <div class="pill-group" data-target="has-5x5-space">
+              <button type="button" class="pill" data-value="Yes">Yes</button>
+              <button type="button" class="pill" data-value="No">No</button>
+            </div>
+            <input type="hidden" id="has-5x5-space" name="has_5x5_space" required>
+          </div>
+
+          <!-- Q7 Available space (conditional) -->
+          <div class="form-field hidden" id="available-space-field">
+            <label class="form-label" for="f-space">7. If No, How Much Space Do You Have?</label>
+            <input class="form-input" type="text" id="f-space" name="available_space" placeholder="e.g. 4m × 6m">
+          </div>
+
+          <!-- Q8 Game mechanics -->
+          <div class="form-field">
+            <label class="form-label" for="f-mechanics">8. Game Mechanics</label>
+            <textarea class="form-textarea" id="f-mechanics" name="game_mechanics" rows="4"
+              placeholder="What should players do? e.g. shoot targets, solve puzzles, race against time, collaborate to defuse a bomb…" required></textarea>
+          </div>
+
+          <!-- Q9 Multiplayer -->
+          <div class="form-field">
+            <label class="form-label">9. Is It a Multiplayer Game?</label>
+            <div class="pill-group" data-target="is-multiplayer">
+              <button type="button" class="pill" data-value="Yes">Yes</button>
+              <button type="button" class="pill" data-value="No">No</button>
+            </div>
+            <input type="hidden" id="is-multiplayer" name="is_multiplayer" required>
+          </div>
+
+          <!-- Q10 Daily targeted players -->
+          <div class="form-field">
+            <label class="form-label" for="f-players">10. How Many Daily Targeted Players Are You Aiming For?</label>
+            <input class="form-input" type="number" id="f-players" name="daily_players" min="1" placeholder="e.g. 200" required>
+          </div>
+
+          <!-- Q11 Key artwork available + details -->
+          <div class="form-field">
+            <label class="form-label">11. Key Artwork Available?</label>
+            <div class="pill-group" data-target="artwork-available">
+              <button type="button" class="pill" data-value="Yes">Yes</button>
+              <button type="button" class="pill" data-value="No">No</button>
+            </div>
+            <input type="hidden" id="artwork-available" name="artwork_available" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="f-artwork-details">Artwork Details <span class="form-helper" style="display:inline">(optional)</span></label>
+            <textarea class="form-textarea" id="f-artwork-details" name="artwork_details" rows="3"
+              placeholder="What assets do you have? e.g. logos, mascots, brand colours, IP, illustrations, 3D models…"></textarea>
+          </div>
+
+          <!-- Q12 Setup design -->
+          <div class="form-field">
+            <label class="form-label">12. Setup Design</label>
+            <div class="pill-group" data-target="setup-design">
+              <button type="button" class="pill" data-value="I have my own design">I have my own design</button>
+              <button type="button" class="pill" data-value="Use RiaReality's template">Use RiaReality's template</button>
+              <button type="button" class="pill" data-value="Need help deciding">Need help deciding</button>
+            </div>
+            <input type="hidden" id="setup-design" name="setup_design" required>
+          </div>
+
+          <!-- Q13 Manpower -->
+          <div class="form-field">
+            <label class="form-label">13. Existing Manpower to Run Operations?</label>
+            <div class="pill-group" data-target="manpower">
+              <button type="button" class="pill" data-value="Yes — we have 3+">Yes — we have 3+</button>
+              <button type="button" class="pill" data-value="Partial — we'll need help">Partial — we'll need help</button>
+              <button type="button" class="pill" data-value="No — we need RiaReality to provide">No — we need RiaReality to provide</button>
+            </div>
+            <p class="form-helper">Recommended: 3 staff to operate.</p>
+            <input type="hidden" id="manpower" name="manpower" required>
+          </div>
+
+          <!-- Q14 Meta Quest 3 -->
+          <div class="form-field">
+            <label class="form-label">14. Meta Quest 3 Headsets</label>
+            <div class="quest-row">
+              <div>
+                <div class="pill-group" data-target="quest-arrangement">
+                  <button type="button" class="pill" data-value="Own">I own them</button>
+                  <button type="button" class="pill" data-value="Rent">Rent from RiaReality</button>
+                </div>
+                <input type="hidden" id="quest-arrangement" name="quest_arrangement" required>
+              </div>
+              <div class="quest-units-wrap">
+                <label class="form-label-sm" for="f-quest-units">How many units?</label>
+                <input class="form-input" type="number" id="f-quest-units" name="quest_units" min="1" placeholder="e.g. 4" required>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submit-btn">Send Request →</button>
+        </form>
+
+        <div class="form-success" id="form-success">
+          <span class="success-icon">✓</span>
+          <h3 class="success-hl">Request received.</h3>
+          <p class="success-body">Thanks for the details. Fariz will review your custom build request and get back to you within 24 hours.</p>
+          <p class="success-sub">In the meantime, feel free to email us directly at fariz@weareedt.com</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    © 2026 RiaReality · <a href="mailto:fariz@weareedt.com">fariz@weareedt.com</a>
+  </footer>
+
+  <script>
+    /* Pill groups — one selection per group, writes to its hidden input */
+    document.querySelectorAll('.pill-group').forEach(group => {
+      const targetId = group.dataset.target;
+      const hidden   = document.getElementById(targetId);
+      const pills    = group.querySelectorAll('.pill');
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          pills.forEach(p => p.classList.remove('selected'));
+          pill.classList.add('selected');
+          hidden.value = pill.dataset.value;
+          hidden.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    });
+
+    /* Q7 conditional — show only when Q6 = No */
+    const has5x5  = document.getElementById('has-5x5-space');
+    const spaceFx = document.getElementById('available-space-field');
+    const spaceIn = document.getElementById('f-space');
+    has5x5.addEventListener('change', () => {
+      if (has5x5.value === 'No') {
+        spaceFx.classList.remove('hidden');
+        spaceIn.required = true;
+      } else {
+        spaceFx.classList.add('hidden');
+        spaceIn.required = false;
+        spaceIn.value = '';
+      }
+    });
+
+    /* Form submission */
+    const form        = document.getElementById('custom-game-form');
+    const submitBtn   = document.getElementById('submit-btn');
+    const formSuccess = document.getElementById('form-success');
+    const formError   = document.getElementById('form-error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      formError.classList.remove('visible');
+
+      /* Validate hidden pill-group inputs (browsers don't natively validate type=hidden) */
+      const requiredHidden = form.querySelectorAll('input[type="hidden"][required]');
+      for (const h of requiredHidden) {
+        if (!h.value) {
+          formError.textContent = 'Please answer all required questions before submitting.';
+          formError.classList.add('visible');
+          formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+      }
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      submitBtn.textContent = 'Sending…';
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch(form.action, {
+          method:  'POST',
+          body:    new FormData(form),
+          headers: { Accept: 'application/json' }
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          formSuccess.classList.add('visible');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          formError.innerHTML = 'Something went wrong. Please try again or email us directly at <a href="mailto:fariz@weareedt.com" style="color:var(--rr-yellow)">fariz@weareedt.com</a>';
+          formError.classList.add('visible');
+          submitBtn.textContent = 'Send Request →';
+          submitBtn.disabled = false;
+        }
+      } catch {
+        formError.innerHTML = 'Something went wrong. Please try again or email us directly at <a href="mailto:fariz@weareedt.com" style="color:var(--rr-yellow)">fariz@weareedt.com</a>';
+        formError.classList.add('visible');
+        submitBtn.textContent = 'Send Request →';
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+
+</body>
+</html>
